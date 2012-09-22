@@ -31,12 +31,12 @@ class NetDNA {
 
 	}
 
-    	private function execute($selected_call,$method_type)
+    private function execute($selected_call,$method_type)
 	{
 		$consumer = new OAuthConsumer($this->key, $this->secret, NULL);
 
 		// the endpoint for your request
-		$endpoint = "https://rws.netdna.com/$this->alias/$selected_call"; //this endpoint will pull the account information for the provided alias
+		$endpoint = "https://rws.netdna.com/$this->alias$selected_call"; //this endpoint will pull the account information for the provided alias
 		//echo "endpoint1 = $endpoint<p>";
 		
 		//parse endpoint before creating OAuth request
