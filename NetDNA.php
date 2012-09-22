@@ -9,15 +9,13 @@ require_once("OAuth.php");
 */
 class NetDNA {
 	
-    public $alias;
+	public $alias;
 
-    public $key;
+	public $key;
 
-    public $secret;
-
-	public $method = 'GET';
+	public $secret;
 	
-	public $netdnarws_url = 'https://rws.netdna.com/';
+	public $netdnarws_url = 'https://rws.netdna.com';
 	
 	
 	public function __construct($alias, $key, $secret, $options=null)
@@ -27,8 +25,6 @@ class NetDNA {
 		$this->secret = $secret;
 		$consumer = new OAuthConsumer($key, $secret, NULL);
 		
-		//echo 'DEBUG The class "', __CLASS__, '" was initiated!<br />'; 
-
 	}
 
     private function execute($selected_call,$method_type)
@@ -36,8 +32,7 @@ class NetDNA {
 		$consumer = new OAuthConsumer($this->key, $this->secret, NULL);
 
 		// the endpoint for your request
-		$endpoint = "https://rws.netdna.com/$this->alias$selected_call"; //this endpoint will pull the account information for the provided alias
-		//echo "endpoint1 = $endpoint<p>";
+		$endpoint = "$this->netdnarws_url/$this->alias$selected_call"; 
 		
 		//parse endpoint before creating OAuth request
 		$parsed = parse_url($endpoint);
@@ -103,6 +98,5 @@ class NetDNA {
 		return $this->execute($selected_call,'DELETE');
 	}
 	
-
 	
 }
