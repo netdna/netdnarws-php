@@ -1,61 +1,108 @@
 <?php
 require_once("OAuth.php");
-
-$key    = 'consumer_key';
-$secret = 'consumer_secret';
-$alias  = 'company_alias';
-
-function NetDNA($api_call,$method_type)
-{
+/** 
+ * NetDNA REST Client Library
+ * 
+ * @copyright 2012
+ * @author Karlo Espiritu
+ * @version 1.0 2012-09-21
+*/
+class NetDNA {
 	
-global $alias,$key,$secret,$OAuthRequest;
+    public $alias;
 
-	// create an OAuth consumer with your key and secret
-	$consumer = new OAuthConsumer($key, $secret, NULL);
+    public $key;
 
-	// the endpoint for your request
-	$endpoint = "https://rws.netdna.com/$alias/$api_call"; //this endpoint will pull the account information for the provided alias
+    public $secret;
 
-	//parse endpoint before creating OAuth request
-	$parsed = parse_url($endpoint);
-	if (array_key_exists("parsed", $parsed))
+	public $method = 'GET';
+	
+	public $netdnarws_url = 'https://rws.netdna.com/';
+	
+	
+	public function __construct($alias, $key, $secret, $options=null)
+    {
+		$this->alias = $alias;
+		$this->key = $key;
+		$this->secret = $secret;
+		$consumer = new OAuthConsumer($key, $secret, NULL);
+		
+		//echo 'DEBUG The class "', __CLASS__, '" was initiated!<br />'; 
+
+	}
+
+    	private function execute($selected_call,$method_type)
 	{
-	    parse_str($parsed['query'], $params);
+		$consumer = new OAuthConsumer($this->key, $this->secret, NULL);
+
+		// the endpoint for your request
+		$endpoint = "https://rws.netdna.com/$this->alias/$selected_call"; //this endpoint will pull the account information for the provided alias
+		//echo "endpoint1 = $endpoint<p>";
+		
+		//parse endpoint before creating OAuth request
+		$parsed = parse_url($endpoint);
+		if (array_key_exists("parsed", $parsed))
+		{
+		    parse_str($parsed['query'], $params);
+		}
+
+		//generate a request from your consumer
+		$req_req = OAuthRequest::from_consumer_and_token($consumer, NULL, $method_type, $endpoint, $params);
+
+		//sign your OAuth request using hmac_sha1
+		$sig_method = new OAuthSignatureMethod_HMAC_SHA1();
+		$req_req->sign_request($sig_method, $consumer, NULL);
+
+		// create curl resource 
+		$ch = curl_init(); 
+		// set url 
+		curl_setopt($ch, CURLOPT_URL, $req_req); 
+		//return the transfer as a string
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER , FALSE);
+
+		// set curl custom request type if not standard
+		if ($method_type != "GET" && $method_type != "POST") {
+		    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method_type);
+		}
+
+
+		if ($method_type == "POST" || $method_type == "PUT" || $method_type == "DELETE") {
+		    $query_str = OAuthUtil::build_http_query($params);
+		    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:', 'Content-Length: ' . strlen($query_str)));
+		    curl_setopt($ch, CURLOPT_POSTFIELDS,  $query_str);
+		}
+
+
+		// $output contains the output string 
+		$json_output = curl_exec($ch);
+
+		// $headers contains the output headers
+		//$headers = curl_getinfo($ch);
+
+		// close curl resource to free up system resources 
+		curl_close($ch);
+		
+		return $json_output;
 	}
-
-	//generate a request from your consumer
-	$req = OAuthRequest::from_consumer_and_token($consumer, NULL, $method_type, $endpoint, $params);
-
-	//sign your OAuth request using hmac_sha1
-	$sig_method = new OAuthSignatureMethod_HMAC_SHA1();
-	$req->sign_request($sig_method, $consumer, NULL);
-
-	// create curl resource 
-	$ch = curl_init(); 
-	// set url 
-	curl_setopt($ch, CURLOPT_URL, $req); 
-	//return the transfer as a string
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER , FALSE);
-
-	// set curl custom request type if not standard
-	if ($method_type != "GET" && $method_type != "POST") {
-	    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method_type);
+	
+	public function get($selected_call){
+		 
+		return $this->execute($selected_call,'GET');
 	}
-
-	if ($method_type == "POST" || $method_type == "PUT" || $method_type == "DELETE") {
-	    $query_str = OAuthUtil::build_http_query($params);
-	    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:', 'Content-Length: ' . strlen($query_str)));
-	    curl_setopt($ch, CURLOPT_POSTFIELDS,  $query_str);
+	
+	public function post($selected_call){
+		return $this->execute($selected_call,'POST');
 	}
+	
+	public function put($selected_call){
+		return $this->execute($selected_call,'PUT');
+	}
+	
+	public function delete($selected_call){
+		return $this->execute($selected_call,'DELETE');
+	}
+	
 
-	// $output contains the output string 
-	$json_output = curl_exec($ch);
-
-
-	// close curl resource to free up system resources 
-	curl_close($ch);
-
-
-	return $json_output;
+	
 }
