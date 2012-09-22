@@ -4,6 +4,8 @@ NetDNA REST Web Services PHP Client
 
 Usage
 
+require_once('NetDNA.php');
+
 $api = NetDNA('zones/pull.json','GET');
 
 
