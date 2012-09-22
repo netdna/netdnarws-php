@@ -27,7 +27,7 @@ class NetDNA {
 		
 	}
 
-    private function execute($selected_call,$method_type)
+	private function execute($selected_call,$method_type)
 	{
 		$consumer = new OAuthConsumer($this->key, $this->secret, NULL);
 
