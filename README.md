@@ -6,7 +6,10 @@
 
 require_once('NetDNA.php');
 
-$api = NetDNA('/zones/pull.json','GET');
+$api = new NetDNA('my_alias',"consumer_key","consumer_secret");
+
+
+$api = NetDNA('/zones/pull.json');
 
 
 ## Methods
