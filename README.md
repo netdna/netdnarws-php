@@ -3,16 +3,15 @@
 
 
 ## Usage
-
+```
 <?php
 
 require_once('NetDNA.php');
 
 $api = new NetDNA("my_alias","consumer_key","consumer_secret");
 
-
 $api = NetDNA('/zones/pull.json');
-
+```
 
 ## Methods
 
