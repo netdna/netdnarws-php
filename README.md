@@ -1,15 +1,15 @@
-NetDNA REST Web Services PHP Client
+# NetDNA REST Web Services PHP Client
 ====================================
 
 
-Usage
+## Usage
 
 require_once('NetDNA.php');
 
 $api = NetDNA('zones/pull.json','GET');
 
 
-Methods
+## Methods
 
 It has support for GET, POST, PUT and DELETE OAuth signed requests.
 
