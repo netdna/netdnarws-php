@@ -20,14 +20,14 @@ class NetDNA {
 	
 	public function __construct($alias, $key, $secret, $options=null)
     {
-		$this->alias = $alias;
-		$this->key = $key;
+		$this->alias  = $alias;
+		$this->key    = $key;
 		$this->secret = $secret;
 		$consumer = new OAuthConsumer($key, $secret, NULL);
 		
 	}
 
-	private function execute($selected_call,$method_type)
+	private function execute($selected_call, $method_type, $params = array())
 	{
 		$consumer = new OAuthConsumer($this->key, $this->secret, NULL);
 
@@ -81,21 +81,21 @@ class NetDNA {
 		return $json_output;
 	}
 	
-	public function get($selected_call){
+	public function get($selected_call, $params){
 		 
-		return $this->execute($selected_call,'GET');
+		return $this->execute($selected_call, 'GET', $params);
 	}
 	
-	public function post($selected_call){
-		return $this->execute($selected_call,'POST');
+	public function post($selected_call, $params){
+		return $this->execute($selected_call, 'POST', $params);
 	}
 	
-	public function put($selected_call){
-		return $this->execute($selected_call,'PUT');
+	public function put($selected_call, $params){
+		return $this->execute($selected_call, 'PUT', $params);
 	}
 	
-	public function delete($selected_call){
-		return $this->execute($selected_call,'DELETE');
+	public function delete($selected_call, $params){
+		return $this->execute($selected_call, 'DELETE', $params);
 	}
 	
 	
