@@ -18,8 +18,7 @@ class NetDNA {
 	public $netdnarws_url = 'https://rws.netdna.com';
 	
 	
-	public function __construct($alias, $key, $secret, $options=null)
-    {
+	public function __construct($alias, $key, $secret, $options=null) {
 		$this->alias  = $alias;
 		$this->key    = $key;
 		$this->secret = $secret;
@@ -27,8 +26,7 @@ class NetDNA {
 		
 	}
 
-	private function execute($selected_call, $method_type, $params = array())
-	{
+	private function execute($selected_call, $method_type, $params) {
 		$consumer = new OAuthConsumer($this->key, $this->secret, NULL);
 
 		// the endpoint for your request
@@ -81,20 +79,20 @@ class NetDNA {
 		return $json_output;
 	}
 	
-	public function get($selected_call, $params){
+	public function get($selected_call, $params = array()){
 		 
 		return $this->execute($selected_call, 'GET', $params);
 	}
 	
-	public function post($selected_call, $params){
+	public function post($selected_call, $params = array()){
 		return $this->execute($selected_call, 'POST', $params);
 	}
 	
-	public function put($selected_call, $params){
+	public function put($selected_call, $params = array()){
 		return $this->execute($selected_call, 'PUT', $params);
 	}
 	
-	public function delete($selected_call, $params){
+	public function delete($selected_call, $params = array()){
 		return $this->execute($selected_call, 'DELETE', $params);
 	}
 	
