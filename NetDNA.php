@@ -1,5 +1,6 @@
 <?php
 require_once("OAuth.php");
+require_once("CurlException.php");
 /** 
  * NetDNA REST Client Library
  * 
@@ -66,17 +67,27 @@ class NetDNA {
 		    curl_setopt($ch, CURLOPT_POSTFIELDS,  $query_str);
 		}
 
+    // retrieve headers
+    curl_setopt($ch, CURLOPT_HEADER, 1);
+    curl_setopt($ch, CURLINFO_HEADER_OUT, 1);
 
-		// $output contains the output string 
-		$json_output = curl_exec($ch);
+    // make call
+    $result = curl_exec($ch);
+    $headers = curl_getinfo($ch);
+    $curl_error = curl_error($ch);
 
-		// $headers contains the output headers
-		//$headers = curl_getinfo($ch);
+    // close curl resource to free up system resources 
+    curl_close($ch);
 
-		// close curl resource to free up system resources 
-		curl_close($ch);
-		
-		return $json_output;
+    // $json_output contains the output string 
+    $json_output = substr($result, $headers['header_size']);
+
+    // catch errors
+    if(!empty($curl_error) || empty($json_output)) { 
+      throw new CurlException("CURL ERROR: $curl_error, Output: $json_output", $headers['http_code'], null, $headers);
+    }
+
+    return $json_output;
 	}
 	
 	public function get($selected_call, $params = array()){
