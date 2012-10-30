@@ -67,27 +67,27 @@ class NetDNA {
 		    curl_setopt($ch, CURLOPT_POSTFIELDS,  $query_str);
 		}
 
-    // retrieve headers
-    curl_setopt($ch, CURLOPT_HEADER, 1);
-    curl_setopt($ch, CURLINFO_HEADER_OUT, 1);
+		// retrieve headers
+		curl_setopt($ch, CURLOPT_HEADER, 1);
+		curl_setopt($ch, CURLINFO_HEADER_OUT, 1);
 
-    // make call
-    $result = curl_exec($ch);
-    $headers = curl_getinfo($ch);
-    $curl_error = curl_error($ch);
+		// make call
+		$result = curl_exec($ch);
+		$headers = curl_getinfo($ch);
+		$curl_error = curl_error($ch);
 
-    // close curl resource to free up system resources 
-    curl_close($ch);
+		// close curl resource to free up system resources 
+		curl_close($ch);
 
-    // $json_output contains the output string 
-    $json_output = substr($result, $headers['header_size']);
+		// $json_output contains the output string 
+		$json_output = substr($result, $headers['header_size']);
 
-    // catch errors
-    if(!empty($curl_error) || empty($json_output)) { 
-      throw new CurlException("CURL ERROR: $curl_error, Output: $json_output", $headers['http_code'], null, $headers);
-    }
+		// catch errors
+		if(!empty($curl_error) || empty($json_output)) { 
+			throw new CurlException("CURL ERROR: $curl_error, Output: $json_output", $headers['http_code'], null, $headers);
+		}
 
-    return $json_output;
+		return $json_output;
 	}
 	
 	public function get($selected_call, $params = array()){
