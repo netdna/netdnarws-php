@@ -4,9 +4,9 @@
 ## Installation
 
 ```shell
-$ wget https://github.com/netdna/netdnarws-php/zipball/master`
+$ wget https://github.com/netdna/netdnarws-php/zipball/master
 $ unzip master
-$ cd netdna-netdnarws-php-f9d7d04
+$ cd netdna-netdnarws-php-*
 ```
 
 ## Usage
