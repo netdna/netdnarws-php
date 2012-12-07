@@ -17,7 +17,12 @@ require_once('NetDNA.php');
 
 $api = new NetDNA("my_alias","consumer_key","consumer_secret");
 
-echo $api->get('/zones/pull.json');
+// get account information
+echo  $api->get('/account.json');
+
+// delete a file from the cache
+$params = array('file' => '/robots.txt');
+echo $api->delete('/zones/pull.json/6055/cache', $params);
 
 ?>
 ```
