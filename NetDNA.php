@@ -49,11 +49,16 @@ class NetDNA {
 
 		// create curl resource 
 		$ch = curl_init(); 
+		
 		// set url 
 		curl_setopt($ch, CURLOPT_URL, $req_req); 
+		
 		//return the transfer as a string
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER , FALSE);
+		
+		// set curl timeout
+		curl_setopt($ch, CURLOPT_TIMEOUT, 60); 
 
 		// set curl custom request type if not standard
 		if ($method_type != "GET" && $method_type != "POST") {
