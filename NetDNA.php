@@ -86,7 +86,7 @@ class NetDNA {
 
 		// $json_output contains the output string 
 		$json_output = substr($result, $headers['header_size']);
-
+		
 		// catch errors
 		if(!empty($curl_error) || empty($json_output)) { 
 			throw new CurlException("CURL ERROR: $curl_error, Output: $json_output", $headers['http_code'], null, $headers);
@@ -109,6 +109,18 @@ class NetDNA {
 	}
 	
 	public function delete($selected_call, $params = array()){
+		return $this->execute($selected_call, 'DELETE', $params);
+	}
+	
+	public function purge($selected_call, $files){
+		$params = array();
+		if (is_array($files)){
+			foreach ($files as $i=>$file){
+				$params['file'.$i] = $file;
+			}
+		} else if ( is_string($files) ){
+			$params['file'] = $files;
+		}
 		return $this->execute($selected_call, 'DELETE', $params);
 	}
 	
