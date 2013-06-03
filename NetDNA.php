@@ -112,7 +112,8 @@ class NetDNA {
 		return $this->execute($selected_call, 'DELETE', $params);
 	}
 	
-	public function purge($selected_call, $files){
+	public function purge($zoneId, $files){
+		$selected_call = '/zones/pull.json/'.$zoneId.'/cache';
 		$params = array();
 		if (is_array($files)){
 			foreach ($files as $i=>$file){
