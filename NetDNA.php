@@ -75,6 +75,9 @@ class NetDNA {
 		// retrieve headers
 		curl_setopt($ch, CURLOPT_HEADER, 1);
 		curl_setopt($ch, CURLINFO_HEADER_OUT, 1);
+		
+		//set user agent
+		curl_setopt($ch, CURLOPT_USERAGENT, 'PHP NetDNA API Client');
 
 		// make call
 		$result = curl_exec($ch);
