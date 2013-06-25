@@ -35,7 +35,7 @@ class NetDNA {
 		
 		//parse endpoint before creating OAuth request
 		$parsed = parse_url($endpoint);
-		if (array_key_exists("parsed", $parsed))
+		if (array_key_exists("query", $parsed))
 		{
 		    parse_str($parsed['query'], $params);
 		}
