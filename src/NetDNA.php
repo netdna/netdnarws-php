@@ -1,6 +1,4 @@
 <?php
-require_once("OAuth.php");
-require_once("CurlException.php");
 /** 
  * NetDNA REST Client Library
  * 
@@ -18,18 +16,17 @@ class NetDNA {
 	
 	public $netdnarws_url = 'https://rws.netdna.com';
 	
+    private $consumer;
 	
 	public function __construct($alias, $key, $secret, $options=null) {
 		$this->alias  = $alias;
 		$this->key    = $key;
 		$this->secret = $secret;
-		$consumer = new OAuthConsumer($key, $secret, NULL);
+		$this->consumer = new \NetDNA\OAuth\OAuthConsumer($key, $secret, NULL);
 		
 	}
 
 	private function execute($selected_call, $method_type, $params) {
-		$consumer = new OAuthConsumer($this->key, $this->secret, NULL);
-
 		// the endpoint for your request
 		$endpoint = "$this->netdnarws_url/$this->alias$selected_call"; 
 		
@@ -41,11 +38,11 @@ class NetDNA {
 		}
 
 		//generate a request from your consumer
-		$req_req = OAuthRequest::from_consumer_and_token($consumer, NULL, $method_type, $endpoint, $params);
+		$req_req = \NetDNA\OAuth\OAuthRequest::from_consumer_and_token($this->consumer, NULL, $method_type, $endpoint, $params);
 
 		//sign your OAuth request using hmac_sha1
-		$sig_method = new OAuthSignatureMethod_HMAC_SHA1();
-		$req_req->sign_request($sig_method, $consumer, NULL);
+		$sig_method = new \NetDNA\OAuth\OAuthSignatureMethod_HMAC_SHA1();
+		$req_req->sign_request($sig_method, $this->consumer, NULL);
 
 		// create curl resource 
 		$ch = curl_init(); 
@@ -67,7 +64,7 @@ class NetDNA {
 
 
 		if ($method_type == "POST" || $method_type == "PUT" || $method_type == "DELETE") {
-		    $query_str = OAuthUtil::build_http_query($params);
+		    $query_str = \NetDNA\OAuth\OAuthUtil::build_http_query($params);
 		    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:', 'Content-Length: ' . strlen($query_str)));
 		    curl_setopt($ch, CURLOPT_POSTFIELDS,  $query_str);
 		}
@@ -92,7 +89,7 @@ class NetDNA {
 
 		// catch errors
 		if(!empty($curl_error) || empty($json_output)) { 
-			throw new CurlException("CURL ERROR: $curl_error, Output: $json_output", $headers['http_code'], null, $headers);
+			throw new \NetDNA\RWSException("CURL ERROR: $curl_error, Output: $json_output", $headers['http_code'], null, $headers);
 		}
 
 		return $json_output;

@@ -1,6 +1,7 @@
 <?php
+namespace NetDNA;
 
-class CurlException extends Exception {
+class RWSException extends Exception {
   
   private $curl_headers;
 

@@ -1,6 +1,6 @@
 <?php
-
-require_once('NetDNA.php');
+// Include Composer Autoloader
+$loader = require_once(__DIR__ . "/../vendor/autoload.php");
 
 $api = new NetDNA("my_alias","consumer_key","consumer_secret");
 try {
