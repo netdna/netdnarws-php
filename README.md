@@ -37,7 +37,7 @@ This will download the NetDNA library and configure composer to use it.  Compose
 Composer prepares an autoload file which autoloads the RWS library for you on demand.  To use it, provide the following at the top of your PHP source files:
 
 ```php
-require_once '/path/to/vendor/autoload.php
+require_once '/path/to/vendor/autoload.php';
 ```
 
 It is advised that you understand how to optimze Composer's usage in Production environments.  For more information about Composer, visit http://getcomposer.org
