@@ -1,7 +1,6 @@
 {
     "name": "netdna/rws-sdk-php",
     "description": "PHP Wrapper for NetDNA Remote Web Services",
-    "version": "2.0.0",
     "type": "library",
     "license": "MIT",
     "homepage": "http://developer.netdna.com",
