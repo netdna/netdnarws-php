@@ -30,7 +30,7 @@ curl -sS https://getcomposer.org/installer | php
 3. Install your package dependencies.
 
 ```bash
-php composer.phar install
+php composer.phar install -o
 ```
 
 This will download the NetDNA library and configure composer to use it.  Composer will also build an autoloader for your use in the next step.
