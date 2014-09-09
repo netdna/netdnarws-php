@@ -3,9 +3,9 @@
     "description": "PHP Wrapper for NetDNA Remote Web Services",
     "type": "library",
     "license": "MIT",
-    "homepage": "http://developer.netdna.com",
+    "homepage": "http://docs.maxcdn.com",
     "support": {
-        "email": "support@netdna.com",
+        "email": "support@maxcdn.com",
         "source": "http://www.github.com/netdna/netdnarws-php"
     },
     "require": { 
